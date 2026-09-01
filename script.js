@@ -126,7 +126,10 @@ expenseForm.addEventListener('submit', function(event) {
     }
 
     const now = new Date();
-    const formattedDate = now.toLocaleDateString() + ' ' + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const day = String(now.getDate()).padStart(2, '0');
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const year = now.getFullYear();
+    const formattedDate = `${day}/${month}/${year} ` + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     const newExpense = {
         id: Date.now(),
@@ -329,7 +332,11 @@ document.getElementById('download-pdf-btn').addEventListener('click', function()
     doc.setFontSize(11);
     doc.text("Employee Name: " + empName, 14, 28);
     doc.text("Email: " + empEmail, 14, 34);
-    doc.text("Generated on: " + new Date().toLocaleDateString(), 14, 40);
+    const genDate = new Date();
+    const gDay = String(genDate.getDate()).padStart(2, '0');
+    const gMonth = String(genDate.getMonth() + 1).padStart(2, '0');
+    const gYear = genDate.getFullYear();
+    doc.text("Generated on: " + `${gDay}/${gMonth}/${gYear}`, 14, 40);
 
     const rate = exchangeRates[currentCurrency] || 1;
     
@@ -376,7 +383,19 @@ document.getElementById('download-pdf-btn').addEventListener('click', function()
         for (let i = 0; i < targetExpenses.length; i++) {
             const item = targetExpenses[i];
             const convertedItemAmount = item.amount * rate;
-            const itemDate = item.date || 'Manual / Legacy';
+            let itemDate = item.date || 'Manual / Legacy';
+            if (item.date && item.date !== 'Manual / Legacy') {
+                const parts = item.date.split(' ');
+                const datePart = parts[0];
+                const timePart = parts.slice(1).join(' ');
+                const dateSplits = datePart.split('/');
+                if (dateSplits.length === 3) {
+                    const day = dateSplits[0].padStart(2, '0');
+                    const month = dateSplits[1].padStart(2, '0');
+                    const year = dateSplits[2];
+                    itemDate = `${day}/${month}/${year}${timePart ? ' ' + timePart : ''}`;
+                }
+            }
             tableBody.push([
                 item.name,
                 itemDate,

@@ -711,6 +711,16 @@ footer {
         box-sizing: border-box;
     }
 }
+@media (max-width: 768px) {
+    
+    .card, .form-container, .metric-card {
+        width: calc(100% - 28px) !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-bottom: 16px !important;
+        box-sizing: border-box !important;
+    }
+}
 .login-overlay {
     position: fixed;
     top: 0;

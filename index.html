@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cash-Flow | Enterprise Financial Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+   <div id="login-overlay" class="login-overlay">
+    <div class="login-card">
+        <h2>Enterprise Login</h2>
+        <p>Access your secure cash-flow portal</p>
+        <input type="text" id="login-name" placeholder="Full Name" autocomplete="off" required>
+        <input type="email" id="login-email" placeholder="Email Address" autocomplete="off" required>
+        <input type="password" id="login-pass" placeholder="Password" required>
+        <button id="login-btn">Sign In</button>
+    </div>
+</div>
+
+    <header class="header">
+        <div class="header-container">
+            <div class="logo-box">
+                <div class="logo-icon">CF</div>
+                <h1>Cash-Flow</h1>
+                <div id="user-session-slot"></div>
+            </div>
+           <div class="header-right">
+                <select id="currency-select" class="currency-dropdown">
+                    <option value="INR">INR (₹)</option>
+                    <option value="USD">USD ($)</option>
+                    <option value="EUR">EUR (€)</option>
+                    <option value="GBP">GBP (£)</option>
+                </select>
+                <span id="api-status" class="api-status-badge hidden" title="Live rates unavailable, using fallback rates">⚠️ Offline Rates</span>
+                <span class="badge">Enterprise Module</span>
+
+                <div class="mobile-menu-container">
+    <button id="hamburger-btn" class="hamburger-btn" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+    <div id="mobile-dropdown" class="mobile-dropdown hidden-dropdown">
+        <div id="mobile-user-slot"></div>
+        <div class="mobile-theme-row">
+            <span>Appearance</span>
+    
+        </div>
+    </div>
+</div>
+                <button id="theme-toggle" class="theme-switch" aria-label="Toggle theme">
+                    <span class="theme-switch__thumb">
+                        <span class="theme-icon sun-icon">☀️</span>
+                        <span class="theme-icon moon-icon">🌙</span>
+                    </span>
+                </button>
+            </div>
+    </header>
+
+    <main class="main-container">
+        <div class="dashboard-grid">
+            
+            <div class="sidebar-column">
+                <section class="card">
+                    <h2>Salary Configuration</h2>
+                    <form id="salary-form">
+                        <div class="form-group">
+                            <label for="total-salary">Total Salary Amount</label>
+                            <input type="number" id="total-salary" min="0" step="any" placeholder="Enter amount (e.g. 50000)" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Set Salary</button>
+                    </form>
+                </section>
+
+                <section class="card">
+                    <h2>Add New Expense</h2>
+                    <form id="expense-form">
+                        <div class="form-group">
+                            <label for="expense-name">Expense Title</label>
+                            <input type="text" id="expense-name" placeholder="e.g. Rent, Grocery" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-amount">Expense Amount</label>
+                            <input type="number" id="expense-amount" min="0" step="any" placeholder="Enter amount" required>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Add Expense</button>
+                    </form>
+                </section>
+            </div>
+
+            <div class="content-column">
+                <section class="metrics-grid">
+                    <div class="metric-card">
+                        <span class="metric-label">Total Salary</span>
+                        <p id="display-salary" class="metric-value">₹0.00</p>
+                    </div>
+                    <div class="metric-card">
+                        <span class="metric-label">Total Expenses</span>
+                        <p id="display-expenses" class="metric-value text-rose">₹0.00</p>
+                    </div>
+                    <div class="metric-card flex-between">
+                        <div>
+                            <span class="metric-label">Remaining Balance</span>
+                            <p id="display-balance" class="metric-value text-emerald">₹0.00</p>
+                        </div>
+                        <span id="threshold-alert" class="hidden alert-badge">
+                            <span>⚠️ Low Balance Warning (&lt;10%)</span>
+                        </span>
+                    </div>
+                </section>
+
+                <section class="card">
+                    <div class="chart-container">
+                        <h2>Expense Distribution</h2>
+                        <div class="canvas-box">
+                            <canvas id="expense-chart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="card">
+    <div class="table-header">
+        <h2>Expense Transactions</h2>
+        <div class="table-actions" style="display: flex; gap: 8px; align-items: center;">
+            <input type="text" id="expense-search" placeholder="Search expense..." class="search-input">
+            <button id="download-pdf-btn" class="btn btn-secondary">Download PDF</button>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Expense Name</th>
+                    <th>Date & Time</th>
+                    <th>Amount</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="expense-list">
+                <tr>
+                    <td colspan="4" class="text-center text-muted">No expenses recorded yet.</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Cash-Flow Financial Systems. All rights reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

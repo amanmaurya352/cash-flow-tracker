@@ -4,7 +4,7 @@ A responsive enterprise-grade financial dashboard developed in Vanilla JavaScrip
 
 ## Live Website
 
-
+https://cash-flow-tracker-aman.netlify.app
 
 ## Features
 
@@ -75,7 +75,8 @@ cash-flow-tracker/
 
 ### Mobile View
 
-
+![mobile](public/screenshots/mobile.png)
+![mobile](public/screenshots/mobile[1].png)
 
 ### Core Feature (Dark Mode)
 

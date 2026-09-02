@@ -462,7 +462,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Mobile menu ke andar user greeting shift karna
     const savedName = sessionStorage.getItem('employeeName');
     if (savedName) {
         const mobileUserSlot = document.getElementById('mobile-user-slot');
@@ -472,7 +471,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Mobile menu ke andar theme toggle button ko copy karna
     const originalThemeBtn = document.getElementById('theme-toggle');
     const mobileThemeRow = document.querySelector('.mobile-theme-row');
     if (originalThemeBtn && mobileThemeRow) {
